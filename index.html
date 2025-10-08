@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🔥🤖 Roast & Toast 🌟💬</title>
 
-<!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4311311949620406"
      crossorigin="anonymous"></script>
 
@@ -121,10 +120,8 @@
 </style>
 </head>
 <body>
-  <!-- Website Title -->
   <h1>🔥🤖 Roast & Toast 🌟💬</h1>
 
-  <!-- AdSense Unit under the title -->
   <div class="ad-container">
     <ins class="adsbygoogle"
          style="display:block"
@@ -137,7 +134,6 @@
     </script>
   </div>
 
-  <!-- Chat Container -->
   <div class="chat-container">
     <div class="chat-box" id="chat-box">
       <div class="chat-message bot">Type a message… 🔮</div>
@@ -152,7 +148,6 @@
 const chatBox = document.getElementById('chat-box');
 const userInput = document.getElementById('user-input');
 
-// Huge list of random roasts & toasts
 const predefinedResponses = [
   "You're like a cloud. When you disappear, it's a beautiful day.",
   "Your smile is proof that even chaos can be cute.",
@@ -176,7 +171,6 @@ const predefinedResponses = [
   "You're the human version of 'loading…'"
 ];
 
-// Append messages
 function appendUserMessage(message) {
   const div = document.createElement('div');
   div.classList.add('chat-message', 'user');
@@ -193,12 +187,11 @@ function appendBotMessage(message) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Get a random roast or toast (no AI)
 async function getAIResponse(message) {
+    // Always returns a random roast/toast
     return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
 }
 
-// Send message
 async function sendMessage() {
   const message = userInput.value.trim();
   if (!message) return;
@@ -210,7 +203,6 @@ async function sendMessage() {
   appendBotMessage(reply);
 }
 
-// Enter key sends message
 userInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') sendMessage();
 });
