@@ -152,7 +152,7 @@
 const chatBox = document.getElementById('chat-box');
 const userInput = document.getElementById('user-input');
 
-// Huge list of roasts & toasts
+// Huge list of random roasts & toasts
 const predefinedResponses = [
   "You're like a cloud. When you disappear, it's a beautiful day.",
   "Your smile is proof that even chaos can be cute.",
@@ -193,23 +193,9 @@ function appendBotMessage(message) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Get response from Vercel backend or fallback random
+// Get a random roast or toast (no AI)
 async function getAIResponse(message) {
-  try {
-    const res = await fetch('https://roast-toast-backend.vercel.app/api/ai-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: message })
-    });
-    const data = await res.json();
-    if (data.reply && data.reply.trim() !== "") return data.reply;
-
-    // Fallback random
     return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
-  } catch {
-    // On error, random
-    return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
-  }
 }
 
 // Send message
@@ -224,7 +210,7 @@ async function sendMessage() {
   appendBotMessage(reply);
 }
 
-// Enter key
+// Enter key sends message
 userInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') sendMessage();
 });
