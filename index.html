@@ -4,16 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🔥🤖 Roast & Toast 🌟💬</title>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4311311949620406"
+     crossorigin="anonymous"></script>
+
 <style>
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #121212;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
     color: #fff;
+    height: 100vh;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #ff6f61;
+    text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff3b2f, 0 0 30px #ff6f61;
+    text-align: center;
   }
 
   .chat-container {
@@ -96,18 +110,42 @@
     from {opacity: 0; transform: translateY(10px);}
     to {opacity: 1; transform: translateY(0);}
   }
+
+  /* Ad container styling */
+  .ad-container {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
 </style>
 </head>
 <body>
-<div class="chat-container">
-  <div class="chat-box" id="chat-box">
-    <div class="chat-message bot">Type a message… 🔮</div>
+  <!-- Website Title -->
+  <h1>🔥🤖 Roast & Toast 🌟💬</h1>
+
+  <!-- AdSense Unit under the title -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4311311949620406"
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   </div>
-  <div class="input-container">
-    <input type="text" id="user-input" placeholder="Type a message…">
-    <button onclick="sendMessage()">Send 💌</button>
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <div class="chat-message bot">Type a message… 🔮</div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Type a message…">
+      <button onclick="sendMessage()">Send 💌</button>
+    </div>
   </div>
-</div>
 
 <script>
   const chatBox = document.getElementById('chat-box');
@@ -131,7 +169,7 @@
 
   async function getAIResponse(message) {
     try {
-      const res = await fetch('https://roast-toast-backend.vercel.app/', {
+      const res = await fetch('https://roast-toast-backend.vercel.app/api/ai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: message })
