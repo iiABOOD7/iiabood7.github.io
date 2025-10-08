@@ -131,7 +131,7 @@
 
   async function getAIResponse(message) {
     try {
-      const res = await fetch('https://YOUR_BACKEND_URL/api/ai-chat', {
+      const res = await fetch('https://roast-toast-backend.vercel.app/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: message })
