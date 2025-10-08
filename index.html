@@ -18,8 +18,9 @@
     flex-direction: column;
     align-items: center;
     color: #fff;
-    height: 100vh;
-    justify-content: center;
+    min-height: 100vh;
+    justify-content: flex-start;
+    padding-top: 50px;
   }
 
   h1 {
@@ -39,6 +40,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin-top: 20px;
   }
 
   .chat-box {
@@ -111,7 +113,6 @@
     to {opacity: 1; transform: translateY(0);}
   }
 
-  /* Ad container styling */
   .ad-container {
     margin: 10px 0;
     display: flex;
@@ -148,53 +149,84 @@
   </div>
 
 <script>
-  const chatBox = document.getElementById('chat-box');
-  const userInput = document.getElementById('user-input');
+const chatBox = document.getElementById('chat-box');
+const userInput = document.getElementById('user-input');
 
-  function appendUserMessage(message) {
-    const div = document.createElement('div');
-    div.classList.add('chat-message', 'user');
-    div.textContent = message;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+// Huge list of roasts & toasts
+const predefinedResponses = [
+  "You're like a cloud. When you disappear, it's a beautiful day.",
+  "Your smile is proof that even chaos can be cute.",
+  "You're the human version of a typo.",
+  "You have something on your chin… no, the third one down.",
+  "You're like a software update… annoying but necessary.",
+  "You're a masterpiece of confusion.",
+  "If brains were taxed, you'd get a refund.",
+  "You're proof that even mistakes can be original.",
+  "You're like Monday mornings… nobody likes you but we tolerate you.",
+  "You have something special… it's called unpredictability.",
+  "You're a legend… in your own lunchtime.",
+  "Your aura screams 'I tried.'",
+  "You're like WiFi… invisible but essential.",
+  "You bring chaos… and a little laughter with it.",
+  "You're like a puzzle… but missing some pieces.",
+  "You're the plot twist nobody saw coming.",
+  "You're a snack… a very confusing snack.",
+  "You're like glitter… impossible to get rid of.",
+  "You have a face for radio… and a voice for art.",
+  "You're the human version of 'loading…'"
+];
+
+// Append messages
+function appendUserMessage(message) {
+  const div = document.createElement('div');
+  div.classList.add('chat-message', 'user');
+  div.textContent = message;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function appendBotMessage(message) {
+  const div = document.createElement('div');
+  div.classList.add('chat-message', 'bot');
+  div.textContent = message;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Get response from backend or fallback random
+async function getAIResponse(message) {
+  try {
+    const res = await fetch('https://roast-toast-backend.vercel.app/api/ai-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: message })
+    });
+    const data = await res.json();
+    if (data.reply && data.reply.trim() !== "") return data.reply;
+
+    // Fallback to random predefined
+    return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
+  } catch {
+    return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
   }
+}
 
-  function appendBotMessage(message) {
-    const div = document.createElement('div');
-    div.classList.add('chat-message', 'bot');
-    div.textContent = message;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+// Send message handler
+async function sendMessage() {
+  const message = userInput.value.trim();
+  if (!message) return;
 
-  async function getAIResponse(message) {
-    try {
-      const res = await fetch('https://roast-toast-backend.vercel.app/api/ai-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: message })
-      });
-      const data = await res.json();
-      return data.reply;
-    } catch {
-      return "Hmm… I couldn't think of anything! 🤔";
-    }
-  }
+  appendUserMessage(message);
+  userInput.value = '';
 
-  async function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
+  const reply = await getAIResponse(message);
+  appendBotMessage(reply);
+}
 
-    appendUserMessage(message);
-    userInput.value = '';
-
-    const reply = await getAIResponse(message);
-    appendBotMessage(reply);
-  }
-
-  userInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') sendMessage();
-  });
+// Send on Enter key
+userInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') sendMessage();
+});
 </script>
 </body>
 </html>
