@@ -193,7 +193,7 @@ function appendBotMessage(message) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Get response from backend or fallback random
+// Get response from Vercel backend or fallback random
 async function getAIResponse(message) {
   try {
     const res = await fetch('https://roast-toast-backend.vercel.app/api/ai-chat', {
@@ -204,14 +204,15 @@ async function getAIResponse(message) {
     const data = await res.json();
     if (data.reply && data.reply.trim() !== "") return data.reply;
 
-    // Fallback to random predefined
+    // Fallback random
     return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
   } catch {
+    // On error, random
     return predefinedResponses[Math.floor(Math.random() * predefinedResponses.length)];
   }
 }
 
-// Send message handler
+// Send message
 async function sendMessage() {
   const message = userInput.value.trim();
   if (!message) return;
@@ -223,7 +224,7 @@ async function sendMessage() {
   appendBotMessage(reply);
 }
 
-// Send on Enter key
+// Enter key
 userInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') sendMessage();
 });
