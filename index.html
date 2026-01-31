@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How Broke Am I Really?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <h1>How Broke Am I Really?</h1>
+    <p class="subtitle">No budgeting. No motivation. Just the truth.</p>
+
+    <div class="card">
+      <input type="number" id="cash" placeholder="💰 Cash you have">
+      <input type="number" id="income" placeholder="📥 Monthly income">
+      <input type="number" id="expenses" placeholder="📤 Monthly expenses">
+      <input type="number" id="debt" placeholder="💳 Total debt (optional)">
+
+      <button onclick="calculate()">Tell me the truth</button>
+    </div>
+
+    <div id="result" class="result hidden">
+      <div id="level" class="level"></div>
+      <p id="months"></p>
+      <p id="verdict" class="verdict"></p>
+      <p class="share">📸 Screenshot this before you lie to yourself</p>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
