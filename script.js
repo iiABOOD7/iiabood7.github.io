@@ -1,7 +1,16 @@
+function formatMoney(amount, currency) {
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currency,
+    maximumFractionDigits: 0
+  }).format(amount);
+}
+
 function calculate() {
   const cash = Number(document.getElementById("cash").value);
   const income = Number(document.getElementById("income").value);
   const expenses = Number(document.getElementById("expenses").value);
+  const currency = document.getElementById("currency").value;
 
   if (!cash || !expenses) {
     alert("Enter at least cash and expenses.");
@@ -47,7 +56,11 @@ function calculate() {
 
   document.getElementById("level").innerText = levelText;
   document.getElementById("level").style.color = color;
-  document.getElementById("months").innerText = `You can survive ~${months} month(s).`;
+
+  document.getElementById("months").innerText =
+    `Cash: ${formatMoney(cash, currency)} • Monthly burn: ${formatMoney(expenses, currency)}
+Survival: ~${months} month(s)`;
+
   document.getElementById("verdict").innerText = verdictText;
 
   document.getElementById("result").classList.remove("hidden");
