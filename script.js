@@ -1,67 +1,77 @@
+const cashInput = document.getElementById("cash");
+const incomeInput = document.getElementById("income");
+const expensesInput = document.getElementById("expenses");
+
+function formatWithCommas(value) {
+  value = value.replace(/,/g, "");
+  if (isNaN(value)) return "";
+  return Number(value).toLocaleString();
+}
+
+[cashInput, incomeInput, expensesInput].forEach(input => {
+  input.addEventListener("input", () => {
+    input.value = formatWithCommas(input.value);
+  });
+});
+
+function getNumber(input) {
+  return Number(input.value.replace(/,/g, "")) || 0;
+}
+
 function formatMoney(amount, currency) {
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: currency,
+    currency,
     maximumFractionDigits: 0
   }).format(amount);
 }
 
 function calculate() {
-  const cash = Number(document.getElementById("cash").value);
-  const income = Number(document.getElementById("income").value);
-  const expenses = Number(document.getElementById("expenses").value);
+  const cash = getNumber(cashInput);
+  const income = getNumber(incomeInput);
+  const expenses = getNumber(expensesInput);
   const currency = document.getElementById("currency").value;
 
-  if (!cash || !expenses) {
-    alert("Enter at least cash and expenses.");
+  if (cash <= 0 || expenses <= 0) {
+    alert("Enter valid cash and expenses.");
     return;
   }
 
-  let net = income - expenses;
-  let months;
+  const net = income - expenses;
+  let months = net >= 0 ? cash / expenses : cash / Math.abs(net);
+  months = Math.max(0, months).toFixed(1);
 
-  if (net >= 0) {
-    months = cash / expenses;
-  } else {
-    months = cash / Math.abs(net);
-  }
-
-  months = Math.max(0, months.toFixed(1));
-
-  let levelText = "";
-  let verdictText = "";
-  let color = "";
+  let level, verdict, color;
 
   if (months > 6) {
-    levelText = "🟢 SAFE";
-    verdictText = "Relax. You could mess up and still recover.";
+    level = "🟢 SAFE";
+    verdict = "Relax. You could mess up and still recover.";
     color = "#3cff7a";
   } else if (months > 3) {
-    levelText = "🟡 TENSE";
-    verdictText = "You’re okay… but stop pretending you’re rich.";
+    level = "🟡 TENSE";
+    verdict = "You’re okay… but stop pretending you’re rich.";
     color = "#ffd93b";
   } else if (months > 1) {
-    levelText = "🟠 DANGER";
-    verdictText = "You’re surviving, not living.";
+    level = "🟠 DANGER";
+    verdict = "You’re surviving, not living.";
     color = "#ff8c00";
   } else if (months > 0.3) {
-    levelText = "🔴 BROKE";
-    verdictText = "One bill away from panic.";
+    level = "🔴 BROKE";
+    verdict = "One bill away from panic.";
     color = "#ff4d4d";
   } else {
-    levelText = "☠️ COOKED";
-    verdictText = "This isn’t broke. This is denial.";
+    level = "☠️ COOKED";
+    verdict = "This isn’t broke. This is denial.";
     color = "#ff0000";
   }
 
-  document.getElementById("level").innerText = levelText;
+  document.getElementById("level").innerText = level;
   document.getElementById("level").style.color = color;
 
   document.getElementById("months").innerText =
     `Cash: ${formatMoney(cash, currency)} • Monthly burn: ${formatMoney(expenses, currency)}
 Survival: ~${months} month(s)`;
 
-  document.getElementById("verdict").innerText = verdictText;
-
+  document.getElementById("verdict").innerText = verdict;
   document.getElementById("result").classList.remove("hidden");
 }
